@@ -11,12 +11,22 @@ import sys
 
 while True:
     try:
-        number = input("Welche Zahl soll eingelesen werden? ")
-        number = int(number)
+        num1 = input("Welche Zahl soll eingelesen werden? ")
+        num1 = int(num1)
         print("Ok")
         break
     except:
         print("Das ist keine Zahl")
 
-print("Eingabe: " , number)
+while True:
+    try:
+        num2 = input("Welche Zahl soll addiert werden? ")
+        num2 = int(num2)
+        print("Ok")
+        break
+    except:
+        print("Das ist keine Zahl")
+ 
+result = num1 + num2       
+print("Ergebnis: ",num1," + ",num2," = ",result)
 ###
