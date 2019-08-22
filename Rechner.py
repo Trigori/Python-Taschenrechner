@@ -6,6 +6,8 @@ Created on Thu Aug 15 15:58:41 2019
 
 @author: simon.stumm
 """
+import math
+
 operators = {"+" : (1,"Addition     "),"-" : (-1,"Subtraktion  "),"*" : ("*","Mutiplikation"),"/" : ("/","Division     ")}
 
 #Einlesen von Zahlen
@@ -13,7 +15,12 @@ def num_read (output=""):
     while True:
         try:
             read = input(output)
-            read = int(read)
+            if read == "pi":
+                read = math.pi
+            elif read == "e":
+                read = math.e
+            else:
+                read = int(read)
             print("\n")
             break
         except:
