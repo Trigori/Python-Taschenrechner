@@ -6,8 +6,9 @@ Created on Thu Aug 15 15:58:41 2019
 
 @author: simon.stumm
 """
-operators = {"+" : (1,"Addition     "),"-" : (-1,"Subtraktion  "), "*" : ("*","Mutiplikation")}
+operators = {"+" : (1,"Addition     "),"-" : (-1,"Subtraktion  "),"*" : ("*","Mutiplikation"),"/" : ("/","Division     ")}
 
+#Einlesen von Zahlen
 def num_read (output=""):
     while True:
         try:
@@ -21,6 +22,7 @@ def num_read (output=""):
 
 ###
 
+#Eingabe
 num1 = num_read("Welche Zahl soll eingelesen werden? ")
 
 while True:
@@ -35,10 +37,21 @@ while True:
         print("Das ist kein gültiger Rechenoperator \n")
 
 num2 = num_read("Welche Zahl soll verrechnet werden? ")
-if operator in (-1,1):
-    result = num1 + num2 * operator
-elif operator == "*":
-    result = num1 * num2
-      
-print("Ergebnis: ",num1," ",choose," ",num2," = ",result)
+
+#Verrechnen
+result = ""
+while result == "":
+    if operator in (-1,1):
+        result = num1 + num2 * operator
+    elif operator == "*":
+        result = num1 * num2
+    elif operator == "/":
+        try:
+            result = num1 / num2
+            if result == int(result):
+                result = int(result)
+        except:
+            print("Division durch 0 nicht möglich")
+            break
+    print("Ergebnis: ",num1," ",choose," ",num2," = ",result)
 ###
