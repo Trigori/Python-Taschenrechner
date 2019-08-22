@@ -8,33 +8,31 @@ Created on Thu Aug 15 15:58:41 2019
 """
 operators = {"+" : 1,"-" : -1}
 
-while True:
-    try:
-        num1 = input("Welche Zahl soll eingelesen werden? ")
-        num1 = int(num1)
-        print("Ok")
-        break
-    except:
-        print("Das ist keine Zahl")
+def num_read (output=""):
+    while True:
+        try:
+            read = input(output)
+            read = int(read)
+            print("\n")
+            break
+        except:
+            print("Das ist keine Zahl")
+    return read
+
+###
+
+num1 = num_read("Welche Zahl soll eingelesen werden? ")
 
 while True:
     try:
         choose = input("Wie soll verrechnet werden?\nAddition   : +\nSubtraktion: -\n")
         operator = operators[choose]
-        print("Ok")
         break
     except:
         print("Das ist kein gültiger Rechenoperator")
 
-while True:
-    try:
-        num2 = input("Welche Zahl soll addiert werden? ")
-        num2 = int(num2)
-        print("Ok")
-        break
-    except:
-        print("Das ist keine Zahl")
- 
-result = num1 + num2 * operator       
+num2 = num_read("Welche Zahl soll verrechnet werden? ")
+result = num1 + num2 * operator 
+      
 print("Ergebnis: ",num1," ",choose," ",num2," = ",result)
 ###
