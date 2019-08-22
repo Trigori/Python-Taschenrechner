@@ -6,8 +6,7 @@ Created on Thu Aug 15 15:58:41 2019
 
 @author: simon.stumm
 """
-
-import sys
+operators = {"+" : 1,"-" : -1}
 
 while True:
     try:
@@ -20,6 +19,15 @@ while True:
 
 while True:
     try:
+        choose = input("Wie soll verrechnet werden?\nAddition   : +\nSubtraktion: -\n")
+        operator = operators[choose]
+        print("Ok")
+        break
+    except:
+        print("Das ist kein gültiger Rechenoperator")
+
+while True:
+    try:
         num2 = input("Welche Zahl soll addiert werden? ")
         num2 = int(num2)
         print("Ok")
@@ -27,6 +35,6 @@ while True:
     except:
         print("Das ist keine Zahl")
  
-result = num1 + num2       
-print("Ergebnis: ",num1," + ",num2," = ",result)
+result = num1 + num2 * operator       
+print("Ergebnis: ",num1," ",choose," ",num2," = ",result)
 ###
