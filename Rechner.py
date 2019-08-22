@@ -6,7 +6,7 @@ Created on Thu Aug 15 15:58:41 2019
 
 @author: simon.stumm
 """
-operators = {"+" : 1,"-" : -1}
+operators = {"+" : (1,"Addition     "),"-" : (-1,"Subtraktion  "), "*" : ("*","Mutiplikation")}
 
 def num_read (output=""):
     while True:
@@ -25,14 +25,20 @@ num1 = num_read("Welche Zahl soll eingelesen werden? ")
 
 while True:
     try:
-        choose = input("Wie soll verrechnet werden?\nAddition   : +\nSubtraktion: -\n")
-        operator = operators[choose]
+        print("Wie soll verrechnet werden?")
+        for i in operators:
+            print(operators[i][1]," : ",i)
+        choose = input()
+        operator = operators[choose][0]
         break
     except:
-        print("Das ist kein gültiger Rechenoperator")
+        print("Das ist kein gültiger Rechenoperator \n")
 
 num2 = num_read("Welche Zahl soll verrechnet werden? ")
-result = num1 + num2 * operator 
+if operator in (-1,1):
+    result = num1 + num2 * operator
+elif operator == "*":
+    result = num1 * num2
       
 print("Ergebnis: ",num1," ",choose," ",num2," = ",result)
 ###
