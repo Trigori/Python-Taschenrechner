@@ -17,6 +17,10 @@ def calculate (operator, term):
         else:
             return 0
     
+    # brackets
+#    i = 0
+#    while i < len()
+    
     # Multiplication & Division
     i = 0
     while i < len(operator):
@@ -44,6 +48,8 @@ print("Bitte geben sie eine Rechnung ein\n")
 for i in operators:
     print(operators[i][1]," : ",i)
 eingabe = input()
+if eingabe[-1] == ".":
+    eingabe = eingabe[0:len(eingabe)-1]
 
 numbers = []
 choose  = []
@@ -100,7 +106,7 @@ while i < len(eingabe):
 #In Zahlen konvertieren
 j = 0
 while j < len(numbers):
-    numbers[j] = int(numbers[j])
+    numbers[j] = float(numbers[j])
     j += 1
 print(numbers)
 
