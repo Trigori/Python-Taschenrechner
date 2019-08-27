@@ -47,30 +47,53 @@ eingabe = input()
 
 numbers = []
 choose  = []
+sign = 1
 k = 0
 i = 0
 while i < len(eingabe):
     if eingabe[i] in operators:
         if i == k:
-            numbers.append(0)
+            if i == 0 and eingabe[i] == '-':
+                sign = -1
+            else:
+                try:
+                    if choose[-1] in ['*','/'] and eingabe[i] == '-':
+                        sign = -1
+                    else:
+                        numbers.append(0)
+                        sign = 1
+                        choose.append(eingabe[i])
+                except:
+                    numbers.append(0)
+                    sign = 1
+                    choose.append(eingabe[i])
         else:
-            numbers.append(eingabe[k:i])
+            if sign == 1:
+                numbers.append(eingabe[k:i])
+            else:
+                numbers.append("-"+eingabe[k:i])
+                sign = 1
+            choose.append(eingabe[i])
         print(numbers)
         if i == len(eingabe)-1:
             numbers.append(0)
             print(numbers)
-        choose.append(eingabe[i])
         k = i+1
         print(choose," ",k)
     elif eingabe[i] not in ziffer:
         print("Eingabefehler")
         numbers = []
         choose  = []
+        sign = 1
         k = 0
         i = 0
         eingabe = input("Bitte geben sie eine Rechnung ein\n")
     elif i == len(eingabe)-1:
-        numbers.append(eingabe[k:i+1])
+        if sign == 1:
+            numbers.append(eingabe[k:i+1])
+        else:
+            numbers.append("-"+eingabe[k:i+1])
+            sign = 1
         print(numbers)
     i += 1
 
