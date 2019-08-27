@@ -4,11 +4,40 @@ Created on Thu Aug 22 15:13:52 2019
 
 @author: simon.stumm
 """
-
 import math
 
 operators = {"+" : (1,"Addition     "),"-" : (-1,"Subtraktion  "),"*" : ("*","Mutiplikation"),"/" : ("/","Division     ")}
 ziffer = ('1','2','3','4','5','6','7','8','9','0','.')
+
+def calculate (operator, term):
+    
+    if len(operator) == 0:
+        if len(term) != []:
+            return term[0]
+        else:
+            return 0
+    
+    # Multiplication & Division
+    i = 0
+    while i < len(operator):
+        if operator[i] == "*":
+            term[i] = term[i] * term.pop(i+1)
+            operator.remove("*")
+        elif operator[i] == "/":
+            try:
+                term[i] = term[i] / term.pop(i+1)
+                if term[i] == int(term[i]):
+                    term[i] = int(term[i])
+                operator.remove("/")
+            except:
+                return "undefined"
+        else:
+            i += 1
+    # Addition & Subtraction
+    while 0 < len(operator):
+        term[0] = term[0] + term.pop(1) * operators[operator.pop(0)][0]
+    return term[0]
+
 
 #Einlesen
 print("Bitte geben sie eine Rechnung ein\n")
@@ -53,28 +82,7 @@ while j < len(numbers):
 print(numbers)
 
 #Rechnen
-if len(choose) == 0:
-    if len(numbers) > 0:
-        result = numbers[0]
-    else:
-        result = 0
+if calculate(choose,numbers) == "undefined":
+    print("Division durch 0 nicht möglich")
 else:
-    result = numbers[0]
-    l = 0
-    while l < len(choose):
-#        result = result + numbers[l+1]*operators[choose[l]][0]
-        if choose[l] in ("+","-"):
-            result = result + numbers[l+1] * operators[choose[l]][0]
-        elif choose[l] == "*":
-            result = result * numbers[l+1]
-        elif choose[l] == "/":
-            try:
-                result = result / numbers[l+1]
-                if result == int(result):
-                    result = int(result)
-            except:
-                print("Division durch 0 nicht möglich")
-                result = "undefined"
-                break
-        l += 1
-    print(" = ",result)
+    print(" = ",numbers[0])
