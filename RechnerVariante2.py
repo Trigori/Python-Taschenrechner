@@ -125,7 +125,7 @@ while i < len(eingabe):
         k = i + 1
         bracket -= 1
     
-    elif eingabe[i] not in digits:
+    elif (eingabe[i] not in digits) or (eingabe[i] == '.' and eingabe[i-1] == '.'):
         print("Ungültige Eingabe")
         numbers = []
         sign = 1
