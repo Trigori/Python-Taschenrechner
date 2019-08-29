@@ -61,89 +61,89 @@ def calculate (term,deap=0):
     return term[0]
 
 
-def stringConvert (eingabe):
-    numbers = []
+def listConvert (string):
+    term = []
     bracket, sign = 0, 1
     k, i = 0, 0
-    while i < len(eingabe):
-        if eingabe[i] in operators:
-            if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
-                if (eingabe[i] != '-') or (i == len(eingabe)-1) or (eingabe[i+1] not in digits):
-                    numbers.append('0')
-                    numbers.append(eingabe[i])
+    while i < len(string):
+        if string[i] in operators:
+            if (i == 0) or (string[i-1] in operators) or (string[i-1] == '('):
+                if (string[i] != '-') or (i == len(string)-1) or (string[i+1] not in digits):
+                    term.append('0')
+                    term.append(string[i])
                 else:
                     sign = -1
-            elif eingabe[i-1] == ')':
-                numbers.append(eingabe[i])
+            elif string[i-1] == ')':
+                term.append(string[i])
             else:
-                numbers.append(sign * eingabe[k:i])
+                term.append(sign * string[k:i])
                 sign = 1
-                numbers.append(eingabe[i])
+                term.append(string[i])
             k = i + 1
     
-        elif eingabe[i] == '(':
-            if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
-                numbers.append('(')
-            elif eingabe[i-1] == ')':
-                numbers.append('*')
-                numbers.append(eingabe[i])
+        elif string[i] == '(':
+            if (i == 0) or (string[i-1] in operators) or (string[i-1] == '('):
+                term.append('(')
+            elif string[i-1] == ')':
+                term.append('*')
+                term.append(string[i])
             else:
-                numbers.append(sign * eingabe[k:i])
-                numbers.append('*')
-                numbers.append('(')
+                term.append(sign * string[k:i])
+                term.append('*')
+                term.append('(')
                 sign = 1
             k = i + 1
             bracket += 1
         
-        elif eingabe[i] == ')':
+        elif string[i] == ')':
             if bracket == 0:
                 return 'ErrorBracket'
-            elif numbers[-1] == '(':
-                numbers.pop(-1)
-            elif eingabe[i-1] == ')':
-                numbers.append(')')
-            elif eingabe[i-1] in operators:
-                numbers.append('0')
-                numbers.append(')')
+            elif term[-1] == '(':
+                term.pop(-1)
+            elif string[i-1] == ')':
+                term.append(')')
+            elif string[i-1] in operators:
+                term.append('0')
+                term.append(')')
             else:
-                numbers.append(sign * eingabe[k:i])
+                term.append(sign * string[k:i])
                 sign = 1
-                numbers.append(')')
+                term.append(')')
             k = i + 1
             bracket -= 1
             
-        elif eingabe[i] not in digits or eingabe[i-1:i+1] == '..':
+        elif string[i] not in digits or string[i-1:i+1] == '..':
             return 'ErrorSymbol'
         
-        if i == len(eingabe)-1:
-            if eingabe[i] == '(':
-                numbers.pop(-1)
+        if i == len(string)-1:
+            if string[i] == '(':
+                term.pop(-1)
                 bracket -= 1
-            elif eingabe[i] in operators:
-                numbers.append('0')
-            elif eingabe[i] in digits:
-                numbers.append(sign * eingabe[k:i+1])
+            elif string[i] in operators:
+                term.append('0')
+            elif string[i] in digits:
+                term.append(sign * string[k:i+1])
             while bracket > 0:
-                numbers.append(')')
+                term.append(')')
                 bracket -= 1
         i += 1  
-    return numbers
+    return term
 
 
-def numConvert (numbers):
+def numConvert (term):
     bracket = 0
     j = 0
-    while j < len(numbers):
-        if numbers[j] == '(':
+    while j < len(term):
+        if term[j] == '(':
             bracket += 1
-            numbers[j] = [bracket]   
-        elif numbers[j] == ')':
-            numbers[j] = [bracket]
+            term[j] = [bracket]   
+        elif term[j] == ')':
+            term[j] = [bracket]
             bracket -= 1
-        elif numbers[j] not in operators:
-            numbers[j] = float(numbers[j])
+        elif term[j] not in operators:
+            term[j] = float(term[j])
         j += 1
-    return numbers
+    return term
 
 
 while True:
@@ -152,7 +152,7 @@ while True:
     print("Bitte geben sie einen Term ein \n","oder drücken sie 'ENTER' zum Beenden\n")
     for i in operators:
         print(operators[i][1]," : ",i)
-    print("Klammern       :  ()")
+    print("Klammern       :  ( )")
     read = input() 
             
     #Konvertieren & Rechnen
@@ -160,7 +160,7 @@ while True:
         print("Abbruch")
         break
     else:
-        read = stringConvert(read)
+        read = listConvert(read)
         if read == 'ErrorBracket':
             print("Ungültige Verwendung von Klammern\n")
         elif read == 'ErrorSymbol':
