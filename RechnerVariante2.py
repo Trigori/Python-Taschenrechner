@@ -149,9 +149,10 @@ def numConvert (numbers):
 while True:
     
     #Einlesen
-    print("Bitte geben sie einen Term ein \noder drücken sie 'ENTER' zum Beenden\n")
+    print("Bitte geben sie einen Term ein \n","oder drücken sie 'ENTER' zum Beenden\n")
     for i in operators:
         print(operators[i][1]," : ",i)
+    print("Klammern       :  ()")
     read = input() 
             
     #Konvertieren & Rechnen
