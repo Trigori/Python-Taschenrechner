@@ -25,8 +25,8 @@ def calculate (term,deap=0):
             print(term[i+1:end])
             result = calculate(term[i+1:end],deap)
             
-            if result == 'undefined':
-                return 'undefined'
+            if result == 'ErrorDiv0':
+                return 'ErrorDiv0'
             term[i] = result
             j = end
             while j > i:
@@ -46,7 +46,7 @@ def calculate (term,deap=0):
             try:
                 term[k-1] = term.pop(k-1) / term.pop(k)
             except:
-                return 'undefined'
+                return 'ErrorDiv0'
         else:
             k += 1
     print(term)
@@ -61,111 +61,115 @@ def calculate (term,deap=0):
     return term[0]
 
 
-#Einlesen
-print("Bitte geben sie einen Term ein\n")
-for i in operators:
-    print(operators[i][1]," : ",i)
-eingabe = input()
-
-numbers = []
-sign = 1
-bracket = 0
-k = 0
-i = 0
-while i < len(eingabe):
-    if eingabe[i] in operators:
-        if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
-            if (eingabe[i] != '-') or (i == len(eingabe)-1) or (eingabe[i+1] not in digits):
-                numbers.append('0')
+def stringConvert (eingabe):
+    numbers = []
+    bracket, sign = 0, 1
+    k, i = 0, 0
+    while i < len(eingabe):
+        if eingabe[i] in operators:
+            if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
+                if (eingabe[i] != '-') or (i == len(eingabe)-1) or (eingabe[i+1] not in digits):
+                    numbers.append('0')
+                    numbers.append(eingabe[i])
+                else:
+                    sign = -1
+            elif eingabe[i-1] == ')':
                 numbers.append(eingabe[i])
             else:
-                sign = -1
-        elif eingabe[i-1] == ')':
-            numbers.append(eingabe[i])
-        else:
-            numbers.append(sign * eingabe[k:i])
-            sign = 1
-            numbers.append(eingabe[i])
-        k = i + 1
+                numbers.append(sign * eingabe[k:i])
+                sign = 1
+                numbers.append(eingabe[i])
+            k = i + 1
     
-    elif eingabe[i] == '(':
-        if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
-            numbers.append('(')
-        elif eingabe[i-1] == ')':
-            numbers.append('*')
-            numbers.append(eingabe[i])
-        else:
-            numbers.append(sign * eingabe[k:i])
-            numbers.append('*')
-            numbers.append('(')
-            sign = 1
-        k = i + 1
-        bracket += 1
+        elif eingabe[i] == '(':
+            if (i == 0) or (eingabe[i-1] in operators) or (eingabe[i-1] == '('):
+                numbers.append('(')
+            elif eingabe[i-1] == ')':
+                numbers.append('*')
+                numbers.append(eingabe[i])
+            else:
+                numbers.append(sign * eingabe[k:i])
+                numbers.append('*')
+                numbers.append('(')
+                sign = 1
+            k = i + 1
+            bracket += 1
         
-    elif eingabe[i] == ')':
-        if bracket == 0:
-            print("Ungültige Eingabe")
-            numbers = []
-            bracket, sign = 0, 1
-            k, i = 0, 0
-            eingabe = input("Bitte geben sie einen Term ein\n")
-        elif numbers[-1] == '(':
-            numbers.pop(-1)
-        elif eingabe[i-1] == ')':
-            numbers.append(')')
-        elif eingabe[i-1] in operators:
-            numbers.append('0')
-            numbers.append(')')
-        else:
-            numbers.append(sign * eingabe[k:i])
-            sign = 1
-            numbers.append(')')
-        k = i + 1
-        bracket -= 1
-    
-    elif eingabe[i] not in digits or eingabe[i-1:i+1] == '..':
-        print("Ungültige Eingabe")
-        numbers = []
-        bracket, sign = 0, 1
-        k, i = 0, 0
-        eingabe = input("Bitte geben sie einen Term ein\n")
-        
-    if i == len(eingabe)-1:
-        if eingabe[i] == '(':
-            numbers.pop(-1)
+        elif eingabe[i] == ')':
+            if bracket == 0:
+                return 'ErrorBracket'
+            elif numbers[-1] == '(':
+                numbers.pop(-1)
+            elif eingabe[i-1] == ')':
+                numbers.append(')')
+            elif eingabe[i-1] in operators:
+                numbers.append('0')
+                numbers.append(')')
+            else:
+                numbers.append(sign * eingabe[k:i])
+                sign = 1
+                numbers.append(')')
+            k = i + 1
             bracket -= 1
-        elif eingabe[i] in operators:
-            numbers.append('0')
-        elif eingabe[i] in digits:
-            numbers.append(sign * eingabe[k:i+1])
-        while bracket > 0:
-            numbers.append(')')
-            bracket -= 1
-    
-    i += 1    
-if numbers == []:
-    numbers = ['0']        
+            
+        elif eingabe[i] not in digits or eingabe[i-1:i+1] == '..':
+            return 'ErrorSymbol'
         
+        if i == len(eingabe)-1:
+            if eingabe[i] == '(':
+                numbers.pop(-1)
+                bracket -= 1
+            elif eingabe[i] in operators:
+                numbers.append('0')
+            elif eingabe[i] in digits:
+                numbers.append(sign * eingabe[k:i+1])
+            while bracket > 0:
+                numbers.append(')')
+                bracket -= 1
+        i += 1  
+    return numbers
 
-#In Zahlen konvertieren
-j = 0
-while j < len(numbers):
-    if numbers[j] == '(':
-        bracket += 1
-        numbers[j] = [bracket]   
-    elif numbers[j] == ')':
-        numbers[j] = [bracket]
-        bracket -= 1
-    elif numbers[j] not in operators:
-        numbers[j] = float(numbers[j])
-    j += 1
-print(numbers)
 
-#Rechnen
-result = calculate(numbers)
-if result == "undefined":
-    print("Division durch 0 nicht möglich")
-else:
-    if result == int(result):
-        result = int(result)
-    print(" = ",result)
+def numConvert (numbers):
+    bracket = 0
+    j = 0
+    while j < len(numbers):
+        if numbers[j] == '(':
+            bracket += 1
+            numbers[j] = [bracket]   
+        elif numbers[j] == ')':
+            numbers[j] = [bracket]
+            bracket -= 1
+        elif numbers[j] not in operators:
+            numbers[j] = float(numbers[j])
+        j += 1
+    return numbers
+
+
+while True:
+    
+    #Einlesen
+    print("Bitte geben sie einen Term ein \noder drücken sie 'ENTER' zum Beenden\n")
+    for i in operators:
+        print(operators[i][1]," : ",i)
+    read = input() 
+            
+    #Konvertieren & Rechnen
+    if len(read) == 0:
+        print("Abbruch")
+        break
+    else:
+        read = stringConvert(read)
+        if read == 'ErrorBracket':
+            print("Ungültige Verwendung von Klammern\n")
+        elif read == 'ErrorSymbol':
+            print("Ungültiges Symbol\n")
+        else:
+            read = numConvert(read)
+            result = calculate(read)
+            if result == 'ErrorDiv0':
+                print("Division durch 0 nicht möglich\n")
+            else:
+                if result == int(result):
+                    result = int(result)
+                print(" = ",result,"\n")    
