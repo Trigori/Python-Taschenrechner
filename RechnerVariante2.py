@@ -106,10 +106,8 @@ while i < len(eingabe):
         if bracket == 0:
             print("Ungültige Eingabe")
             numbers = []
-            sign = 1
-            bracket = 0
-            k = 0
-            i = 0
+            bracket, sign = 0, 1
+            k, i = 0, 0
             eingabe = input("Bitte geben sie einen Term ein\n")
         elif numbers[-1] == '(':
             numbers.pop(-1)
@@ -125,13 +123,11 @@ while i < len(eingabe):
         k = i + 1
         bracket -= 1
     
-    elif (eingabe[i] not in digits) or (eingabe[i] == '.' and eingabe[i-1] == '.'):
+    elif eingabe[i] not in digits or eingabe[i-1:i+1] == '..':
         print("Ungültige Eingabe")
         numbers = []
-        sign = 1
-        bracket = 0
-        k = 0
-        i = 0
+        bracket, sign = 0, 1
+        k, i = 0, 0
         eingabe = input("Bitte geben sie einen Term ein\n")
         
     if i == len(eingabe)-1:
